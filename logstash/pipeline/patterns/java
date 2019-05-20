@@ -1,0 +1,9 @@
+# Java Logs
+CATALINA_DATESTAMP %{MONTHDAY} %{MONTH} 20%{YEAR} %{HOUR}:?%{MINUTE}(?::?%{SECOND}) (?:AM|PM)
+JAVATHREAD (?:[A-Z]{2}-Processor[\d]+)
+JAVACLASS (?:[a-zA-Z0-9-]+\.)+[A-Za-z0-9$]+
+JAVACLASSNAME (?:[A-Za-z0-9_.-]+)
+JAVAMETHOD (?:[A-Za-z0-9_.-]+)
+JAVAFILE (?:[A-Za-z0-9_.-]+)
+JAVALOGMESSAGE (.*)
+BUCKET_INPUT {(.*)}

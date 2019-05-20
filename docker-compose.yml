@@ -1,0 +1,47 @@
+version: '3'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.7.2
+    environment:
+      - cluster.name=ESCluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.7.2
+    ports:
+      - 5601:5601
+    environment:
+      - XPACK_APM_ENABLED=false
+      - XPACK_INFRA_ENABLED=false
+      - XPACK_GRAPH_ENABLED=false
+      - XPACK_GROKDEBUGGER_ENABLED=false
+      - XPACK_ML_ENABLED=false
+      - XPACK_MONITORING_UI_ENABLED=false
+      - XPACK_CANVAS_ENABLED=false
+      - XPACK_SEARCHPROFILER_ENABLED=false
+  logstash:
+    image: docker.elastic.co/logstash/logstash:6.7.2
+    environment:
+      - XPACK_MONITORING_ENABLED=false
+      - LOG_LEVEL=info
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+    ports:
+      - 5044:5044
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:6.7.2
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./logs:/var/log/app
+volumes:
+  esdata1:
+    driver: local
